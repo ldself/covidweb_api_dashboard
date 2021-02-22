@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Covid API Dashboard</title>
+
+<!--import script files needed for plotly and bootstrap-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</head>
+
+<body>
+
+<!--navbar links-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark stick-top">
+    <a class="navbar-brand" href="#">COVID Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="https://www.udacity.com">Udacity</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://covidtracking.com/">Covid Tracking Data</a>
+            </li>
+        </ul>
+    </div>
+      
+</nav>
+
+<!--middle section-->
+<div class="row">
+
+    <div class="col-12">
+    
+        <div class="dropdown">
+            <button class="btn btn-danger btn-lg dropdown-toggle" type="button" 
+    	  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" 
+    	  		aria-expanded="false">Filter by state</button>      
+    	  		
+    	  	<div class="dropdown-menu" aria-labelledby="drowdownMenuButton">
+                <form class="px-4 py-3" role="form" method="post" action="/" id="form-filter">
+					{% for state in all_states %}
+						<button class="dropdown-item" type="submit" name="{{ state[0] }}" value="{{ state[1] }}">{{state[0]}}</button>
+					{% endfor %}
+    			</form>    	  	
+    	  	</div>
+    	  	
+    	  	    	  	  
+        </div>
+        
+        <!--charts-->		
+		<div id="charts" class="container mt-3 text-center">
+					
+			<!--top two charts-->		
+			<div class="row">
+				<div class="col-12">
+					<div id="{{ids[0]}}"></div>
+				</div>
+			</div>
+
+		
+		</div>
+    
+    </div>
+
+</div>
+
+
+
+</body>
+
+<footer>
+    <script type="text/javascript">
+    	// plots the figure by id using Plotly
+    	// id much match the div id above in the html
+    	var figures = {{figuresJSON | safe}};
+		var ids = {{ids | safe}};
+		for(var i in figures) {
+			Plotly.plot(ids[i],
+				figures[i].data,
+				figures[i].layout || {});
+		};
+    </script>
+</footer>
+
+</html>
